@@ -1,0 +1,27 @@
+# Java/Maven (User Service)
+target/
+*.class
+*.jar
+*.war
+*.log
+
+# Node.js (Product Service)
+node_modules/
+npm-debug.log
+
+# Python (Order Service - Day 6 prep)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+
+# Go (Recommend Service - future)
+*.exe
+*.out
+
+# General
+*.DS_Store  # MacOS
+*.idea/     # IntelliJ IDEA
+*.vscode/   # VS Code
+*.swp       # Vim
