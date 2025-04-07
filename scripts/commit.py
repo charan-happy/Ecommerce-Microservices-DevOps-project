@@ -7,7 +7,7 @@ from datetime import datetime
 timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 # commit message with timestamp
-message = f"Automated commit on {timestamp}"
+message = input("Enter your commit message : ")+f" commit on {timestamp}"
 
 # Git commands
 subprocess.run(["git", "add", "."], check=True)
