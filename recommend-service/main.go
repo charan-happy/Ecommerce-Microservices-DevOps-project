@@ -3,20 +3,31 @@ package main
 import (
     "fmt"
     "net/http"
-    "io/ioutil"
+    "io"
     "encoding/json"
 )
 
 func recommendHandler(w http.ResponseWriter, r *http.Request) {
     resp, err := http.Get("http://localhost:3000/products")
     if err != nil {
-        http.Error(w, "Failed to fetch product", 500)
+        http.Error(w, "Error: Product Service unavailable", 503)
         return
     }
     defer resp.Body.Close()
-    body, _ := ioutil.ReadAll(resp.Body)
+    if resp.StatusCode != http.StatusOK {
+        http.Error(w, "Error: Product Service failed", resp.StatusCode)
+        return
+    }
+    body, err := io.ReadAll(resp.Body)
+    if err != nil {
+        http.Error(w, "Error: Failed to read product data", 500)
+        return
+    }
     var product map[string]interface{}
-    json.Unmarshal(body, &product)
+    if err := json.Unmarshal(body, &product); err != nil {
+        http.Error(w, "Error: Invalid product data", 500)
+        return
+    }
     fmt.Fprintf(w, "Recommended: %v", product["name"])
 }
 
