@@ -6,12 +6,12 @@ app = Flask(__name__)
 @app.route('/orders', methods=['GET'])
 def get_orders():
     try:
-        user = requests.get('http://localhost:8080/users', timeout=2).json()
+        user = requests.get('http://user-service:8080/users', timeout=2).json()
     except (requests.RequestException, ValueError):
         return "Error: User Service unavailable", 503
     
     try:
-        product = requests.get('http://localhost:3000/products', timeout=2).json()
+        product = requests.get('http://product-service:3000/products', timeout=2).json()
     except (requests.RequestException, ValueError):
         return "Error: Product Service unavailable", 503
     

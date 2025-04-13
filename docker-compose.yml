@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  user-service:
+    build: ./user-service
+    ports:
+      - "8080:8080"
+    container_name: user-service
+
+  product-service:  # Fixed spacing before colon
+    build: ./product-service
+    ports:
+      - "3000:3000"
+    container_name: product-service
+
+  order-service:
+    build: ./order-service
+    ports:
+      - "5000:5000"
+    container_name: order-service
+    volumes:
+      - ./order-service:/app  # Sync local code to container
+    environment:
+      - FLASK_ENV=development
+    depends_on:
+      - user-service
+      - product-service  # Fixed spacing and removed "This iss my" typo
+
+  recommend-service:
+    build: ./recommend-service
+    ports:
+      - "8081:8081"
+    container_name: recommend-service
+    depends_on:
+      - product-service
+
