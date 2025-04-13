@@ -7,17 +7,16 @@ WORKDIR /app
 # Copy package.json and package-lock.json for dependency installation
 COPY package*.json ./
 
-# Install only production dependencies
-RUN npm ci --only=production
+# Install 
+RUN npm install
 
 # Copy application code
 COPY . .
 
+COPY public/ ./public/
+
 # Expose port 3000
 EXPOSE 3000
-
-# Set environment variables (optional)
-# ENV NODE_ENV=production
 
 # Run the app
 CMD ["node", "app.js"]

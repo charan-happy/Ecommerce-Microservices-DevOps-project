@@ -3,11 +3,11 @@ const app = express();
 const port = 3000;
 
 app.use(express.json());
+app.use(express.static('public')); // Serve static files
 
 let products = [{ id: 101, name: "Laptop", price: 999 }];
 let idCounter = 102;
 
-// GET all products
 app.get('/products', (req, res) => {
     try {
         res.json(products);
@@ -16,7 +16,6 @@ app.get('/products', (req, res) => {
     }
 });
 
-// GET product by ID
 app.get('/products/:id', (req, res) => {
     try {
         const product = products.find(p => p.id === parseInt(req.params.id));
@@ -30,7 +29,6 @@ app.get('/products/:id', (req, res) => {
     }
 });
 
-// POST new product
 app.post('/products', (req, res) => {
     try {
         const { name, price } = req.body;
@@ -45,7 +43,6 @@ app.post('/products', (req, res) => {
     }
 });
 
-// PUT update product
 app.put('/products/:id', (req, res) => {
     try {
         const { name, price } = req.body;
@@ -64,7 +61,6 @@ app.put('/products/:id', (req, res) => {
     }
 });
 
-// DELETE product
 app.delete('/products/:id', (req, res) => {
     try {
         const index = products.findIndex(p => p.id === parseInt(req.params.id));

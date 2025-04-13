@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Management</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .form-container { margin-bottom: 20px; }
+        input, button { margin: 5px; }
+    </style>
+</head>
+<body>
+    <h2>Product Management</h2>
+
+    <!-- Add Product Form -->
+    <div class="form-container">
+        <h3>Add Product</h3>
+        <input type="text" id="addName" placeholder="Name">
+        <input type="number" id="addPrice" placeholder="Price">
+        <button onclick="addProduct()">Add</button>
+    </div>
+
+    <!-- Product List -->
+    <h3>Products</h3>
+    <table id="productTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="productList"></tbody>
+    </table>
+
+    <script>
+        // Fetch and display products
+        function loadProducts() {
+            fetch('/products')
+                .then(response => response.json())
+                .then(products => {
+                    const tbody = document.getElementById('productList');
+                    tbody.innerHTML = '';
+                    products.forEach(product => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${product.id}</td>
+                            <td>${product.name}</td>
+                            <td>${product.price}</td>
+                            <td><button onclick="deleteProduct(${product.id})">Delete</button></td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                });
+        }
+
+        // Add product
+        function addProduct() {
+            const name = document.getElementById('addName').value;
+            const price = parseFloat(document.getElementById('addPrice').value);
+            if (!name || isNaN(price) || price < 0) return alert('Valid name and price required');
+            fetch('/products', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, price })
+            }).then(() => {
+                document.getElementById('addName').value = '';
+                document.getElementById('addPrice').value = '';
+                loadProducts();
+            });
+        }
+
+        // Delete product
+        function deleteProduct(id) {
+            fetch(`/products/${id}`, { method: 'DELETE' })
+                .then(() => loadProducts());
+        }
+
+        // Load products on page load
+        window.onload = loadProducts;
+    </script>
+</body>
+</html>

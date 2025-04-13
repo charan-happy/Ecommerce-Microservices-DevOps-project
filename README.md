@@ -47,6 +47,13 @@ This project implements four microservices to simulate an e-commerce platform:
 - curl http://localhost:5000/orders
 - curl http://localhost:8081/recommend
 
+- curl -X POST -H "Content-Type: application/json" -d '{"user_id": 1, "product_id": 101}'
+
+
+## User Interface
+- **User Management**: Visit `http://localhost:8080/` to add, update, or delete users.
+- **Product Management**: Visit `http://localhost:3000/` to add or delete products.
+
 ## API Endpoints
 - **User Service**:
   - `GET /users`: List all users.

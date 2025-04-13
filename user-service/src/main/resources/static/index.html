@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Management</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .form-container { margin-bottom: 20px; }
+        input, button { margin: 5px; }
+    </style>
+</head>
+<body>
+    <h2>User Management</h2>
+
+    <!-- Add User Form -->
+    <div class="form-container">
+        <h3>Add User</h3>
+        <input type="text" id="addName" placeholder="Name">
+        <button onclick="addUser()">Add</button>
+    </div>
+
+    <!-- Update User Form -->
+    <div class="form-container">
+        <h3>Update User</h3>
+        <input type="number" id="updateId" placeholder="User ID">
+        <input type="text" id="updateName" placeholder="New Name">
+        <button onclick="updateUser()">Update</button>
+    </div>
+
+    <!-- User List -->
+    <h3>Users</h3>
+    <table id="userTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="userList"></tbody>
+    </table>
+
+    <script>
+        // Fetch and display users
+        function loadUsers() {
+            fetch('/users')
+                .then(response => response.json())
+                .then(users => {
+                    const tbody = document.getElementById('userList');
+                    tbody.innerHTML = '';
+                    users.forEach(user => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${user.id}</td>
+                            <td>${user.name}</td>
+                            <td><button onclick="deleteUser(${user.id})">Delete</button></td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                });
+        }
+
+        // Add user
+        function addUser() {
+            const name = document.getElementById('addName').value;
+            if (!name) return alert('Name required');
+            fetch('/users', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name })
+            }).then(() => {
+                document.getElementById('addName').value = '';
+                loadUsers();
+            });
+        }
+
+        // Update user
+        function updateUser() {
+            const id = document.getElementById('updateId').value;
+            const name = document.getElementById('updateName').value;
+            if (!id || !name) return alert('ID and Name required');
+            fetch(`/users/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name })
+            }).then(() => {
+                document.getElementById('updateId').value = '';
+                document.getElementById('updateName').value = '';
+                loadUsers();
+            });
+        }
+
+        // Delete user
+        function deleteUser(id) {
+            fetch(`/users/${id}`, { method: 'DELETE' })
+                .then(() => loadUsers());
+        }
+
+        // Load users on page load
+        window.onload = loadUsers;
+    </script>
+</body>
+</html>
