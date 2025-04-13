@@ -8,7 +8,7 @@ import (
 )
 
 func recommendHandler(w http.ResponseWriter, r *http.Request) {
-    resp, err := http.Get("http://localhost:3000/products")
+    resp, err := http.Get("http://product-service:3000/products")
     if err != nil {
         http.Error(w, "Error: Product Service unavailable", 503)
         return

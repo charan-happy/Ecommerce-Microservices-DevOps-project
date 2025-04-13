@@ -1,18 +1,23 @@
-# Base image with nodejs
-FROM node:16
+# Base image with Node.js (using a specific version for stability)
+FROM node:16.19.0-bullseye-slim
 
-# Creating a work directory
+# Create app directory
 WORKDIR /app
 
-# copy package.json and install packages
-COPY package.json .
-RUN npm install
+# Copy package.json and package-lock.json for dependency installation
+COPY package*.json ./
 
-# copy application code 
-COPY app.js . 
+# Install only production dependencies
+RUN npm ci --only=production
+
+# Copy application code
+COPY . .
 
 # Expose port 3000
 EXPOSE 3000
+
+# Set environment variables (optional)
+# ENV NODE_ENV=production
 
 # Run the app
 CMD ["node", "app.js"]

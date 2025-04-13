@@ -1,11 +1,4 @@
-# Java/Maven (User Service)
-target/
-*.class
-*.jar
-*.war
-*.log
-<<<<<<< HEAD
-=======
+
 # Compiled class files
 *.class
 
@@ -60,13 +53,11 @@ Thumbs.db
 /coverage/
 *.
 
->>>>>>> 9b9ce5d (Automated commit on 2025-04-06 03:51:49)
+
 
 # Node.js (Product Service)
-node_modules/
-npm-debug.log
-<<<<<<< HEAD
-=======
+
+
 # Dependency directories
 node_modules/
 
@@ -110,7 +101,7 @@ package-lock.json
 
 # Ignore generated documentation (if applicable)
 docs/
->>>>>>> 9b9ce5d (Automated commit on 2025-04-06 03:51:49)
+
 
 # Python (Order Service - Day 6 prep)
 __pycache__/
@@ -118,9 +109,7 @@ __pycache__/
 *.pyo
 *.pyd
 *.log
-<<<<<<< HEAD
 
-=======
 # Python Bytecode and Compiled Files
 __pycache__/
 *.pyc
@@ -162,9 +151,9 @@ instance/
 
 # Project-Specific (Optional)
 order-service/*.log  # If you add logging later
->>>>>>> 9b9ce5d (Automated commit on 2025-04-06 03:51:49)
+
 # Go (Recommend Service - future)
-*.exe
+!*.exe
 *.out
 
 # General
