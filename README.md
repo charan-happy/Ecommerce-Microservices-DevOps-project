@@ -46,3 +46,21 @@ This project implements four microservices to simulate an e-commerce platform:
 - curl http://localhost:3000/products
 - curl http://localhost:5000/orders
 - curl http://localhost:8081/recommend
+
+## API Endpoints
+- **User Service**:
+  - `GET /users`: List all users.
+  - `GET /users/{id}`: Get user by ID.
+  - `POST /users`: Create user (`{"name": "Alice"}`).
+  - `PUT /users/{id}`: Update user.
+  - `DELETE /users/{id}`: Delete user.
+- **Product Service**:
+  - `GET /products`: List all products.
+  - `GET /products/{id}`: Get product by ID.
+  - `POST /products`: Create product (`{"name": "Phone", "price": 499}`).
+  - `PUT /products/{id}`: Update product.
+  - `DELETE /products/{id}`: Delete product.
+- **Order Service**:
+  - `POST /orders`: Create order (`{"user_id": 1, "product_id": 101}`).
+- **Recommend Service**:
+  - `GET /recommend`: Get recommended product.
