@@ -29,6 +29,9 @@ jobs:
     - name: Build Recommend Service
       run: docker build -t recommend-service:latest ./recommend-service
 
+    - name: Install Docker Compose
+      run: sudo apt install docker-compose -y && docker-compose --version
+
     - name: Run Docker Compose
       run: docker-compose -f docker-compose.yml up -d
 
