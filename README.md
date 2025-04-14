@@ -54,6 +54,13 @@ This project implements four microservices to simulate an e-commerce platform:
 - **User Management**: Visit `http://localhost:8080/` to add, update, or delete users.
 - **Product Management**: Visit `http://localhost:3000/` to add or delete products.
 
+## CI Pipeline
+- **GitHub Actions**: Automated CI pipeline (`.github/workflows/ci.yml`):
+  - Builds Docker images for all services.
+  - Runs API health checks and unit tests.
+  - Triggered on push/pull to `main`
+
+
 ## API Endpoints
 - **User Service**:
   - `GET /users`: List all users.
