@@ -1,0 +1,63 @@
+pipeline {
+    agent any
+    tools {
+        maven 'Maven3'
+        nodejs 'Node16'
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                git url: 'https://github.com/charan-happy/Ecommerce-Microservices-DevOps-project.git', branch: 'main'
+            }
+        }
+        stage('Build User Service') {
+            steps {
+                dir('user-service') {
+                    sh 'mvn clean package'
+                    sh 'docker build -t user-service:latest .'
+                }
+            }
+        }
+        stage('Build Product Service') {
+            steps {
+                dir('product-service') {
+                    sh 'npm install'
+                    sh 'docker build -t product-service:latest .'
+                }
+            }
+        }
+        stage('Build Order Service') {
+            steps {
+                dir('order-service') {
+                    sh 'pip install -r requirements.txt'
+                    sh 'docker build -t order-service:latest .'
+                }
+            }
+        }
+        stage('Build Recommend Service') {
+            steps {
+                dir('recommend-service') {
+                    sh 'docker build -t recommend-service:latest .'
+                }
+            }
+        }
+        stage('Test Services') {
+            steps {
+                sh 'docker-compose -f docker-compose.yml up -d'
+                sh 'sleep 10'  // Increased for stability
+                sh 'curl --fail http://localhost:8080/users || exit 1'
+                sh 'curl --fail http://localhost:3000/products || exit 1'
+                sh 'curl --fail -X POST -H "Content-Type: application/json" -d \'{"user_id": 1, "product_id": 101}\' http://localhost:5000/orders || exit 1'
+                sh 'curl --fail http://localhost:8081/recommend || exit 1'
+                dir('order-service') {
+                    sh 'docker exec order-service python -m unittest /app/tests/test_order.py'
+                }
+            }
+            post {
+                always {
+                    sh 'docker-compose -f docker-compose.yml down'
+                }
+            }
+        }
+    }
+}
