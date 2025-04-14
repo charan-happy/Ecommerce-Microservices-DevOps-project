@@ -36,7 +36,7 @@ jobs:
     - name: Test User Service
       run: |
         sleep 10
-      curl --fail http://localhost:8080/users
+        curl --fail http://localhost:8080/users
 
     - name: Test Product Service
       run: |
